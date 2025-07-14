@@ -1,0 +1,59 @@
+# Support Copilot - Python Dependencies
+
+# Web Framework
+Flask==2.3.3
+Flask-CORS==4.0.0
+Flask-Limiter==3.5.0
+
+# Database
+mysql-connector-python==8.1.0
+SQLAlchemy==2.0.21
+
+# Authentication & Security
+PyJWT==2.8.0
+bcrypt==4.0.1
+cryptography==41.0.4
+
+# AI & ML
+mistralai
+scikit-learn==1.3.0
+numpy==1.24.3
+pandas==2.0.3
+
+# Template Engine
+Jinja2==3.1.2
+
+# Caching
+redis==4.6.0
+
+# HTTP Requests
+requests==2.31.0
+
+# Environment Management
+python-dotenv==1.0.0
+
+# Monitoring & Logging
+prometheus-client==0.17.1
+
+# Data Processing
+beautifulsoup4==4.12.2
+lxml==4.9.3
+
+# Testing
+pytest==7.4.2
+pytest-flask==1.2.0
+pytest-mock==3.11.1
+
+# Development
+black==23.7.0
+flake8==6.0.0
+mypy==1.5.1
+
+# AWS SDK (for cloud deployment)
+boto3==1.28.57
+botocore==1.31.57
+
+# Utilities
+click==8.1.7
+python-dateutil==2.8.2
+pytz==2023.3
