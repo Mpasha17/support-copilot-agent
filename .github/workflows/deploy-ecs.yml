@@ -73,10 +73,23 @@ jobs:
         username: ${{ secrets.EC2_USER }}
         key: ${{ secrets.EC2_SSH_KEY }}
         script: |
-          aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin ${{ steps.login-ecr.outputs.registry }}
-          docker pull ${{ steps.login-ecr.outputs.registry }}/$ECR_REPOSITORY:${{ github.sha }}
+          # Install AWS CLI if missing
+          if ! command -v aws &> /dev/null; then
+            curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+            unzip awscliv2.zip
+            sudo ./aws/install
+          fi
+
+          export AWS_REGION=us-east-1
+          export ECR_REPOSITORY=lula
+
+          aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin 273354653862.dkr.ecr.us-east-1.amazonaws.com
+
+          docker pull 273354653862.dkr.ecr.us-east-1.amazonaws.com/$ECR_REPOSITORY:${{ github.sha }}
+
           docker stop support_copilot || true
           docker rm support_copilot || true
+
           docker run -d --name support_copilot \
             -e DB_HOST=${{ secrets.RDS_HOST }} \
             -e DB_USER=${{ secrets.RDS_USER }} \
@@ -84,4 +97,4 @@ jobs:
             -e DB_NAME=${{ secrets.RDS_DB }} \
             -e MISTRAL_API_KEY=${{ secrets.MISTRAL_API_KEY }} \
             -p 5000:5000 \
-            ${{ steps.login-ecr.outputs.registry }}/$ECR_REPOSITORY:${{ github.sha }} 
+            273354653862.dkr.ecr.us-east-1.amazonaws.com/$ECR_REPOSITORY:${{ github.sha }} 
