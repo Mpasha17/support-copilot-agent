@@ -122,3 +122,5 @@ ssl/
 
 # Word temp files
 temp_docx/ 
+.env/
+.env
