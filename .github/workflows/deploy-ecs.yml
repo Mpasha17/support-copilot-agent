@@ -51,9 +51,6 @@ jobs:
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: ${{ env.AWS_REGION }}
 
-    - name: Login to Amazon ECR
-      uses: aws-actions/amazon-ecr-login@v2
-
     - name: Build, tag, and push Docker image to ECR
       run: |
         docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:${{ github.sha }} .
@@ -61,11 +58,12 @@ jobs:
 
     - name: Deploy Container
       run: |
-        # Stop and remove the old container if it exists
+        # Login to ECR (manual, so no auto-logout)
+        aws ecr get-login-password --region ${{ env.AWS_REGION }} | docker login --username AWS --password-stdin $ECR_REGISTRY
+
         docker stop support_copilot || true
         docker rm support_copilot || true
 
-        # Run the new container
         docker run -d --name support_copilot \
           --restart always \
           -e DB_HOST=${{ secrets.RDS_HOST }} \
