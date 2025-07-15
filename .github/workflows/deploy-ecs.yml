@@ -88,7 +88,10 @@ jobs:
 
           export AWS_REGION=us-east-1
           export ECR_REPOSITORY=lula
+          export AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}
+          export AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
+          # ECR login using echo to avoid interactive issues
           aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin 273354653862.dkr.ecr.us-east-1.amazonaws.com
 
           docker pull 273354653862.dkr.ecr.us-east-1.amazonaws.com/$ECR_REPOSITORY:${{ github.sha }}
